@@ -11,6 +11,8 @@ function gr (contenedor,series,nombre){
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },credits: {
+              enabled: true
             },
             yAxis: {
                 title: {
@@ -55,7 +57,9 @@ function grln (contenedor,series,nombre,metodo){
               title: {
                 text: 'Polaridad'
               },
-              categories: {'-1':'Negativos','0':'Neutros','1':'Positivos'}
+              categories: {'-1':'-1 Negativo','0':'0 Neutro','1':'1 Positivo'}
+            },credits: {
+              enabled: true
             },
             plotOptions: {
               area: {
@@ -106,7 +110,7 @@ function grcovid (contenedor,confirmados,muertos,recuperados,activos,nombre){
                 text: nombre
             },
             subtitle: {
-                text: 'Fuente: https://documenter.getpostman.com/'
+                text: 'Fuente: https://covid19api.com/'
             },
             legend: {
                 layout: 'vertical',
@@ -120,6 +124,8 @@ function grcovid (contenedor,confirmados,muertos,recuperados,activos,nombre){
               title: {
                 text: ''
               },
+            },credits: {
+              enabled: true
             },
             plotOptions: {
               series: {
