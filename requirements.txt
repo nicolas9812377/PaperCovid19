@@ -1,0 +1,10 @@
+flask == 1.1.2
+wordcloud == 1.8.0
+gensim == 3.8.3
+pyldavis == 2.1.2
+sklearn == 0.0
+textblob == 0.15.3
+tweepy == 3.9.0
+venv-run == 0.0.0
+gunicorn == 20.0
+virtualenv == 20.0.21
