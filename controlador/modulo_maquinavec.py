@@ -7,13 +7,16 @@ def maqvec(tweets):
   #leer diccionario
   dic = lc.leerTxt('modelo/dic_datasetGlobal.txt')
 
+  '''
   #BOlsa y diccionario tweets consultados
   #Proceso NLP
   tt1 = nl.minusculas(tweets)
   tt1 = nl.eliminarce(tt1)
   tt1 = nl.tokenizar(tt1)
   tt1 = nl.qstopwords(tt1,1)
-  tt1 = nl.stemmer(tt1)
+  
+  '''
+  tt1 = nl.stemmer(tweets)
   
   print('Generando Bolsa de Palabras')
   bolsa1 = nl.inverted(tt1,dic)  

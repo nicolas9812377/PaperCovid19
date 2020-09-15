@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request,Response
 from controlador import procesos as p  
 import json
 app = Flask(__name__)
@@ -12,6 +12,11 @@ def recibircant():
   if request.method == 'POST':
     rs = p.literal1(int(request.values.get('cant')),str(request.values.get('fechaInicio')),str(request.values.get('fechaFin')))
   return json.dumps(rs),{'Content-Type': 'application/json'}
+
+@app.route('/topic')
+def topic():
+  with open('templates/LDA_Visualization.html') as file:
+    return file.read(),200,{'Content-Type': 'text/html; charset=utf-8'}
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0')   

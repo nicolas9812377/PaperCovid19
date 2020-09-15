@@ -11,7 +11,6 @@ import pyLDAvis
 import pyLDAvis.gensim
 from nltk.corpus import stopwords
 import gensim.corpora as corpora
-from wordcloud import WordCloud
 
 from controlador import nlp as nl
 
@@ -58,7 +57,7 @@ def literal1(n, fechaInicio, fechaFin):
     tweet, fecha = tw.obtenerTweets(n, fechaInicio, fechaFin)
     #variable q contiene los tweets generales
     temp = tweet[:]
-    #variable temporal para evitar cambios de los tweets
+    #variable q contiene los tweets generales
     tempo = temp[:]
     #Proceso NLP
     tweet = nl.minusculas(tweet)
@@ -105,15 +104,19 @@ def literal1(n, fechaInicio, fechaFin):
     #Obteniendo Resultados, columnas = vectorneg[0,1:]
     # filas = vectorneg[1:,0]
     cp= categorizar(vectorpos[1:, 0], vectorneg[1:, 0])
+    #TextBlob SVM
+    txtblob = textblob(tempo)
+    svm = mv.maqvec(tweet)
 
     rs.append(fecha) #fecha
     rs.append(temp) #tweet general
     rs.append(jp) #Jacard
     rs.append(cp) #Coseno
-    rs.append(textblob(tempo)) #textblob
-    rs.append(mv.maqvec(tempo)) #SVM
+    rs.append(txtblob) #textblob
+    rs.append(svm) #SVM
     #rs.append(topicmodeling(tweet))
     rs.append([])
+    rs.append(voting(jp,cp,txtblob,svm))
     #Resultados api
     confirmados,muertos,recuperados,activos,fecha = api.obtenerInfo()
     rs.append(confirmados)
@@ -121,7 +124,11 @@ def literal1(n, fechaInicio, fechaFin):
     rs.append(recuperados)
     rs.append(activos)
     rs.append(fecha)
-    nube(temp)
+    vec_nube_temp = []
+    for review in tweet:
+      for review1 in review:
+        vec_nube_temp.append(review1)
+    rs.append(" ".join(review2 for review2 in vec_nube_temp))
     return rs
 
 
@@ -217,6 +224,42 @@ def textblob(temp1):
 
 
 ##################################################
+
+################Voting#########################
+def voting(*predictions):
+  vector_predictions=[]
+  for prediccion in predictions:
+    vector_predictions.append(sustituir(prediccion))
+  #Numpy para facilitar promedio   
+  final_predictions = np.array(vector_predictions)
+  #promedio numpy
+  final_predictions = np.mean(final_predictions, axis = 0)  
+  #transformar a lista
+  final_predictions = final_predictions.tolist()
+  sentimiento = []
+  for p in final_predictions:
+    if (p >= -1 and p < 0):
+      sentimiento.append('Negativo')
+    elif (p == 0):
+      sentimiento.append('Neutro')
+    elif (p > 0 and p <= 1):
+      sentimiento.append('Positivo')
+  return sentimiento
+
+def sustituir(vector):
+  vector_temp = []
+  for vec in vector:
+    if vec == "Positivo":
+      vector_temp.append(1)
+    elif vec == 'Neutro':
+      vector_temp.append(0)
+    elif vec == 'Negativo':
+      vector_temp.append(-1)
+  return vector_temp
+###############################################
+
+'''
+Optimizar y realizacion de la nube por parte del frontend
 ##########WORDCLOUD##########################
 def nube(tweet):
     #Unir tweets en uno solo
@@ -227,3 +270,4 @@ def nube(tweet):
     #Guardar Imagen
     wordcloud.to_file("static/wordc/0.png")
 ###############################################
+'''

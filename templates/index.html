@@ -2,36 +2,44 @@
 <html>
 
 <head>
-    <title>Analisis de Sentimientos</title>
-    
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- css -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,300,700,800" rel="stylesheet" media="screen">
+	<title>Analisis de Sentimientos</title>
 
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('static', filename='color/default.css') }}" rel="stylesheet" media="screen">
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<!-- css -->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,300,700,800" rel="stylesheet" media="screen">
 
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/data.js"></script>
-    <!--<script src="https://code.highcharts.com/modules/series-label.js"></script>-->
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-  <link rel="shortcut icon" href="{{ url_for('static', filename='img/twitter.ico') }}">
-  <link rel="icon" type="image/gif" href="{{ url_for('static', filename='img/twitter.ico') }}">
+	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+	<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
+	<link href="{{ url_for('static', filename='color/default.css') }}" rel="stylesheet" media="screen">
+
+	<script src="{{ url_for('static', filename='js/scripts.js') }}">
+	</script>
+	<script src="https://code.highcharts.com/highcharts.js">
+	</script>
+	<script src="https://code.highcharts.com/modules/data.js">
+	</script>
+	<script src="https://code.highcharts.com/modules/wordcloud.js">
+	</script>
+	<!--<script src="https://code.highcharts.com/modules/series-label.js"></script>-->
+	<script src="https://code.highcharts.com/modules/exporting.js">
+	</script>
+	<script src="https://code.highcharts.com/modules/export-data.js">
+	</script>
+	<script src="https://code.highcharts.com/modules/accessibility.js">
+	</script>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='img/twitter.ico') }}">
+	<link rel="icon" type="image/gif" href="{{ url_for('static', filename='img/twitter.ico') }}">
 </head>
 
-<body>
+<body onload="onload()">
 
-    <!-- Navigation -->
-  
-    <nav class="navbar navbar-default" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+	<!-- Navigation -->
+
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
           <span class="sr-only">Toggle nav</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -85,10 +93,10 @@
                         <p>Similitud en los Corpus del Tweet con Diccionario de Sentimientos </p>
                         <br>
                         Cantidad de tweets
-                        <input type="number" min="0" id="cantidad" name="cantidad" placeholder="Cantidad de Tweets" required="required">
+                        <input type="number" min="1" value="10" id="cantidad" name="cantidad" placeholder="Cantidad de Tweets" required="required">
                         <br><br>
                         Fecha de Inicio
-                        <input type="date" name="fechaInicio" id="fechaInicio" placeholder="Ingrese Fecha de Tweets" required="required">
+                        <input type="date" name="fechaInicio" value="2020-09-01" id="fechaInicio" placeholder="Ingrese Fecha de Tweets" required="required">
                         <br><br>
                         Fecha Fin
                         <input type="date" name="fechaFin" id="fechaFin" placeholder="Ingrese Fecha de Tweets" required="required">
@@ -104,25 +112,25 @@
                       <table class="table table-borderless table-hover">
                         <thead >
                           <tr>
-                            <th></th><th>Jaccard</th><th >Coseno Vectorial</th><th >Text Blob</th><th >SVM</th>
+                            <th></th><th>Jaccard</th><th >Coseno Vectorial</th><th >Text Blob</th><th >SVM</th> <th>Voting</th>
                           </tr>
                         </thead>
 
                         <tbody>
                           <tr>
-                            <td>Positivos</td><td id="jp">0%</td><td id="cp">0%</td><td id="tbp">0%</td><td id="svmp">0%</td>
+                            <td>Positivos</td><td id="jp">0%</td><td id="cp">0%</td><td id="tbp">0%</td><td id="svmp">0%</td><td id="vp">0%</td>
                           </tr>
                           
                           <tr>
-                            <td>Negativos</td><td id="jn">0%</td><td id="cn">0%</td><td id="tbn">0%</td><td id="svmn">0%</td>
+                            <td>Negativos</td><td id="jn">0%</td><td id="cn">0%</td><td id="tbn">0%</td><td id="svmn">0%</td><td id="vn">0%</td>
                           </tr>
                           
                           <tr>
-                            <td>Neutros</td><td id="jne">0%</td><td id="cne">0%</td><td id="tbne">0%</td><td id="svmne">0%</td>
+                            <td>Neutros</td><td id="jne">0%</td><td id="cne">0%</td><td id="tbne">0%</td><td id="svmne">0%</td><td id="vne">0%</td>
                           </tr>
                         
                           <tr>
-                            <td>Total Tweets</td><td id="jt">0</td><td id="ct">0</td><td id="tbt">0</td><td id="svmt">0</td>
+                            <td>Total Tweets</td><td id="jt">0</td><td id="ct">0</td><td id="tbt">0</td><td id="svmt">0</td><td id="vt">0</td>
                           </tr>
                         </tbody>
                       </table>
@@ -132,13 +140,13 @@
                 <div id="container1" style="display:none;float:right;width:45%; height:310px;"></div>
                 <div id="container2" style="display:none;float:left;width:45%; height:310px;"></div>
                 <div id="container3" style="display:none;float:right;width:45%; height:310px;"></div>
-
+                <div id="container4" style="display:none;float:left;width:45%; height:310px;"></div>
               </div>
-                      <div class="table-responsive" style="height:300px !important; width: 100%">
+                      <div class="table-responsive" style="height:300px !important; width: 110%">
                         <table id="tablat" class="table table-striped" style='display:none'>
                         <thead class="thead-light">
                         <tr>
-                        <th>ID</th><th>Fecha</th><th>Tweets</th><th>Jaccard</th><th>Coseno Vectorial</th><th>Text Blob</th><th>SVM</th>
+                        <th>ID</th><th>Fecha</th><th>Tweets</th><th>Jaccard</th><th>Coseno Vectorial</th><th>Text Blob</th><th>SVM</th><th>Voting</th>
                         </tr>
                         </thead>
                         <tbody style="text-align:left"></tbody>
@@ -182,17 +190,20 @@
                     </ul>
                     <div class="tab-content" id="myTabContent">
                       <div class="tab-pane fade active" id="nube" role="tabpanel" aria-labelledby="nube-tab">
-                        <img src="{{ url_for('static', filename='wordc/0.png') }}" alt="Nube de palabras" style="width:90%;margin-top:5%">
+                        <div id="container5" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
                       </div>
-                      <div class="tab-pane fade" id="LDA" role="tabpanel" aria-labelledby="LDA-tab">LDA...</div>
+                      <div class="tab-pane fade" id="LDA" role="tabpanel" aria-labelledby="LDA-tab">
+                        <object type="text/html" data="https://papercovid19.jcarrascop1.repl.co/topic" style="width:120%;height:850px;"></object>
+                      </div>
                       <div class="tab-pane fade" id="covid" role="tabpanel" aria-labelledby="covid-tab">
-                        <div id="container4" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
+                        <div id="container6" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
                       </div>
                       <div class="tab-pane fade" id="sentimientos" role="tabpanel" aria-labelledby="sentimientos-tab">
-                        <div id="container5" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
-                        <div id="container6" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
                         <div id="container7" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
                         <div id="container8" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
+                        <div id="container9" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
+                        <div id="container10" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
+                        <div id="container11" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
                       </div>
                     </div>
                     

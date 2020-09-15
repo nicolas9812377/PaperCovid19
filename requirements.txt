@@ -1,5 +1,4 @@
 flask == 1.1.2
-wordcloud == 1.8.0
 gensim == 3.8.3
 pyldavis == 2.1.2
 sklearn == 0.0
