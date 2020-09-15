@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Analisis de Sentimientos</title>
+    
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- css -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,300,700,800" rel="stylesheet" media="screen">
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='color/default.css') }}" rel="stylesheet" media="screen">
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='img/twitter.ico') }}">
+  <link rel="icon" type="image/gif" href="{{ url_for('static', filename='img/twitter.ico') }}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+  
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle nav</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+                <!-- Logo text or image -->
+                <a class="navbar-brand" href="index.html">COVID 19</a>
+
+            </div>
+            <div class="navigation collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="current"><a href="#intro">Inicio</a></li>
+                    <li><a href="#parte1">Tweet</a></li>
+                    <li><a href="#visualizacion">Visualización</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- intro area -->
+    <section id="intro">
+        <div class="intro-container">
+            <div id="introCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+
+                <div class="carousel-inner" role="listbox">
+                    <!-- Slide 1 -->
+                    <div class="item active">
+                        <div class="carousel-background"><img src="{{ url_for('static', filename='img/intro/fondo1.png') }}" alt=""></div>
+                        <div class="carousel-container">
+                            <div class="carousel-content">
+                                <h2 class="animated fadeInDown">Analisis De Sentimientos</h2>
+                                <p class="animated fadeInUp">Enfocado en los tweets de las personas con respecto al covid-19</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pegar si desean Slide 2 -->
+                </div>
+            </div>
+    </section>
+    <!-- #intro -->
+
+    <!-- Tweet -->
+    <section id="parte1" class="home-section bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-8">
+                    <div class="section-heading">
+                        <h2>Parte 1</h2>
+                        <div class="heading-line"></div>
+                        <p>Similitud en los Corpus del Tweet con Diccionario de Sentimientos </p>
+                        <br>
+                        Cantidad de tweets
+                        <input type="number" min="0" id="cantidad" name="cantidad" placeholder="Cantidad de Tweets" required="required">
+                        <br><br>
+                        Fecha de Inicio
+                        <input type="date" name="fechaInicio" id="fechaInicio" placeholder="Ingrese Fecha de Tweets" required="required">
+                        <br><br>
+                        Fecha Fin
+                        <input type="date" name="fechaFin" id="fechaFin" placeholder="Ingrese Fecha de Tweets" required="required">
+                        <br><br>
+                        <input type= "button" id="boton1" value="Validar" onclick="validar(event)" >
+                        <br><br>
+                        <input type= "button" id="boton" value="Consultar" onclick="graficar()" >
+                        <div id='loadingmessage' style='display:none'>
+       <img src='{{ url_for('static', filename='img/ajax-loader.gif') }}'/>
+       </div>
+       <br>
+       <br>             
+                      <table class="table table-borderless table-hover">
+                        <thead >
+                          <tr>
+                            <th></th><th>Jaccard</th><th >Coseno Vectorial</th><th >Text Blob</th><th >SVM</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <tr>
+                            <td>Positivos</td><td id="jp">0%</td><td id="cp">0%</td><td id="tbp">0%</td><td id="svmp">0%</td>
+                          </tr>
+                          
+                          <tr>
+                            <td>Negativos</td><td id="jn">0%</td><td id="cn">0%</td><td id="tbn">0%</td><td id="svmn">0%</td>
+                          </tr>
+                          
+                          <tr>
+                            <td>Neutros</td><td id="jne">0%</td><td id="cne">0%</td><td id="tbne">0%</td><td id="svmne">0%</td>
+                          </tr>
+                        
+                          <tr>
+                            <td>Total Tweets</td><td id="jt">0</td><td id="ct">0</td><td id="tbt">0</td><td id="svmt">0</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                        
+              <div style="width:100%">  
+                <div id="container" style="display:none;float:left;width:45%;height:310px;"></div>
+                <div id="container1" style="display:none;float:right;width:45%; height:310px;"></div>
+                <div id="container2" style="display:none;float:left;width:45%; height:310px;"></div>
+                <div id="container3" style="display:none;float:right;width:45%; height:310px;"></div>
+
+              </div>
+                      <div class="table-responsive" style="height:300px !important; width: 100%">
+                        <table id="tablat" class="table table-striped" style='display:none'>
+                        <thead class="thead-light">
+                        <tr>
+                        <th>ID</th><th>Fecha</th><th>Tweets</th><th>Jaccard</th><th>Coseno Vectorial</th><th>Text Blob</th><th>SVM</th>
+                        </tr>
+                        </thead>
+                        <tbody style="text-align:left"></tbody>
+                        </table>
+                      </div> 
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    </section>
+
+  <!-- Visualizacion -->
+  <section id="parte2" class="home-section bg-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-8">
+                    <div class="section-heading">
+                        <h2>Visualización</h2>
+                        <div class="heading-line"></div>
+                        <p> </p>
+                      </div>
+                     <div id='loadingmessage2' style='display:none'>
+                      <img src='{{ url_for('static', filename='img/ajax-loader.gif') }}'/>
+                    </div>
+
+                      <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="nube-tab" data-toggle="tab" href="#nube" role="tab" aria-controls="nube" aria-selected="true">Nube de Palabras</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="LDA-tab" data-toggle="tab" href="#LDA" role="tab" aria-controls="LDA" aria-selected="false">LDA</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="covid-tab" data-toggle="tab" href="#covid" role="tab" aria-controls="covid" aria-selected="false">Covid 19</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="sentimientos-tab" data-toggle="tab" href="#sentimientos" role="tab" aria-controls="sentimientos" aria-selected="false">Sentimientos</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade active" id="nube" role="tabpanel" aria-labelledby="nube-tab">
+                        <img src="{{ url_for('static', filename='wordc/0.png') }}" alt="Nube de palabras" style="width:90%;margin-top:5%">
+                      </div>
+                      <div class="tab-pane fade" id="LDA" role="tabpanel" aria-labelledby="LDA-tab">LDA...</div>
+                      <div class="tab-pane fade" id="covid" role="tabpanel" aria-labelledby="covid-tab">
+                        <div id="container4" style="display:none;width:100%;margin-top:5%; height:310px;"></div>
+                      </div>
+                      <div class="tab-pane fade" id="sentimientos" role="tabpanel" aria-labelledby="sentimientos-tab">
+                        <div id="container5" style="display:none;width:100%;margin-top:5%; height:310px;"></div>
+                        <div id="container6" style="display:none;width:100%;margin-top:5%; height:310px;"></div>
+                        <div id="container7" style="display:none;width:100%;margin-top:5%; height:310px;"></div>
+                        <div id="container8" style="display:none;width:100%;margin-top:5%; height:310px;"></div>
+                      </div>
+                    </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--<p>Copyright &copy; JANMP. All rights reserved 2020.</p>-->
+                    <div class="credits">
+                        
+                        <!--Diseñado por:
+                        Nicolas Carrasco -
+                        Alisson Mendoza - 
+                        Paul Pazos - 
+                        Jerssona Iza - 
+                        Maria Jose Jacome--> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+    <!-- js -->
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/wow.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.scrollTo.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nav.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/modernizr.custom.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/grid.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/stellar.js') }}"></script>
+   
+
+    <!-- Template Custom Javascript File -->
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+    
+</body>
+
+</html>
