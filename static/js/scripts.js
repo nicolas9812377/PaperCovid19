@@ -236,88 +236,90 @@ function grnube (contenedor,data1){
 });
 }
 
-function graficar(){
+function graficar(event){
    $('#loadingmessage').show();
    $('#boton').attr("disabled", true);
-  $.ajax({
-    url:'/lit1',
-    data:{cant : $('#cantidad').val(),fechaInicio : $('#fechaInicio').val(),fechaFin : $('#fechaFin').val()},
-    type: 'POST',
-   
-    success: function(msg){
-      $('#loadingmessage').hide();
-      $('#boton').attr("disabled", false);
-
-      //Lenar Tabla porcentaje
-      //tporcentaje=[]
-      $('#jp').text((contar(msg[2],"Positivo")/msg[2].length).toFixed(2)+'%');
-      $('#jn').text((contar(msg[2],"Negativo")/msg[2].length).toFixed(2)+'%');
-      $('#jne').text((contar(msg[2],"Neutro")/msg[2].length).toFixed(2)+'%');
-      $('#jt').text(msg[2].length);
-      $('#cp').text((contar(msg[3],"Positivo")/msg[3].length).toFixed(2)+'%');
-      $('#cn').text((contar(msg[3],"Negativo")/msg[3].length).toFixed(2)+'%');
-      $('#cne').text((contar(msg[3],"Neutro")/msg[3].length).toFixed(2)+'%');
-      $('#ct').text(msg[3].length);
-      $('#tbp').text((contar(msg[4],"Positivo")/msg[4].length).toFixed(2)+'%');
-      $('#tbn').text((contar(msg[4],"Negativo")/msg[4].length).toFixed(2)+'%');
-      $('#tbne').text((contar(msg[4],"Neutro")/msg[4].length).toFixed(2)+'%');
-      $('#tbt').text(msg[4].length);
-      $('#svmp').text((contar(msg[5],"Positivo")/msg[5].length).toFixed(2)+'%');
-      $('#svmn').text((contar(msg[5],"Negativo")/msg[5].length).toFixed(2)+'%');
-      $('#svmne').text((contar(msg[5],"Neutro")/msg[5].length).toFixed(2)+'%');
-      $('#svmt').text(msg[5].length);
-      $('#vp').text((contar(msg[7],"Positivo")/msg[7].length).toFixed(2)+'%');
-      $('#vn').text((contar(msg[7],"Negativo")/msg[7].length).toFixed(2)+'%');
-      $('#vne').text((contar(msg[7],"Neutro")/msg[7].length).toFixed(2)+'%');
-      $('#vt').text(msg[7].length);
-     
-     //Graficos Pastel
-     titulos = ['Similitud Jaccard','Similitud Coseno','Text Blob','SVM','','Voting'];
-     contenedores = ['container','container1','container2','container3','','container4']
-      for(let i = 2; i < 8; i++ ){
-        //if temporal por parte del lda
-        if(i !== 6){
-          let datos = [
-            {name: 'Positivos',y:contar(msg[i],"Positivo")},
-            {name: 'Negativos',y:contar(msg[i],"Negativo")},
-            {name: 'Neutros',y:contar(msg[i],"Neutro")} 
-          ];
-          gr(contenedores[i-2],datos,titulos[i-2]);
-        }
-      }
-
-      //Llenar Tabla
-      let tabla = ''
-      for(let i = 0; i < msg[0].length; i++ ){
-        tabla += `<tr><td>${i+1}</td><td>${new Date(msg[0][i]).toLocaleDateString()}</td><td>${msg[1][i]}</td><td>${msg[2][i]}</td><td>${msg[3][i]}</td><td>${msg[4][i]}</td><td>${msg[5][i]}</td><td>${msg[7][i]}</td></tr>`; 
-      }
-
-      //Mostrar elementos
-      $('#tablat,#container,#container1,#container2,#container3,#container4,#container5,#container6,#container7,#container8,#container9,#container10,#container11').show();
-      $('#tablat tbody tr').remove();
-      $('#tablat').append(tabla);
+   if(validar(event)){
+      $.ajax({
+        url:'/lit1',
+        data:{cant : $('#cantidad').val(),fechaInicio : $('#fechaInicio').val(),fechaFin : $('#fechaFin').val()},
+        type: 'POST',
       
+        success: function(msg){
+          $('#loadingmessage').hide();
+          $('#boton').attr("disabled", false);
 
-      //Grafico wordcloud
-      grnube('container5',msg[13]);
+          //Lenar Tabla porcentaje
+          //tporcentaje=[]
+          $('#jp').text((contar(msg[2],"Positivo")/msg[2].length).toFixed(2)+'%');
+          $('#jn').text((contar(msg[2],"Negativo")/msg[2].length).toFixed(2)+'%');
+          $('#jne').text((contar(msg[2],"Neutro")/msg[2].length).toFixed(2)+'%');
+          $('#jt').text(msg[2].length);
+          $('#cp').text((contar(msg[3],"Positivo")/msg[3].length).toFixed(2)+'%');
+          $('#cn').text((contar(msg[3],"Negativo")/msg[3].length).toFixed(2)+'%');
+          $('#cne').text((contar(msg[3],"Neutro")/msg[3].length).toFixed(2)+'%');
+          $('#ct').text(msg[3].length);
+          $('#tbp').text((contar(msg[4],"Positivo")/msg[4].length).toFixed(2)+'%');
+          $('#tbn').text((contar(msg[4],"Negativo")/msg[4].length).toFixed(2)+'%');
+          $('#tbne').text((contar(msg[4],"Neutro")/msg[4].length).toFixed(2)+'%');
+          $('#tbt').text(msg[4].length);
+          $('#svmp').text((contar(msg[5],"Positivo")/msg[5].length).toFixed(2)+'%');
+          $('#svmn').text((contar(msg[5],"Negativo")/msg[5].length).toFixed(2)+'%');
+          $('#svmne').text((contar(msg[5],"Neutro")/msg[5].length).toFixed(2)+'%');
+          $('#svmt').text(msg[5].length);
+          $('#vp').text((contar(msg[7],"Positivo")/msg[7].length).toFixed(2)+'%');
+          $('#vn').text((contar(msg[7],"Negativo")/msg[7].length).toFixed(2)+'%');
+          $('#vne').text((contar(msg[7],"Neutro")/msg[7].length).toFixed(2)+'%');
+          $('#vt').text(msg[7].length);
+        
+        //Graficos Pastel
+        titulos = ['Similitud Jaccard','Similitud Coseno','Text Blob','SVM','','Voting'];
+        contenedores = ['container','container1','container2','container3','','container4']
+          for(let i = 2; i < 8; i++ ){
+            //if temporal por parte del lda
+            if(i !== 6){
+              let datos = [
+                {name: 'Positivos',y:contar(msg[i],"Positivo")},
+                {name: 'Negativos',y:contar(msg[i],"Negativo")},
+                {name: 'Neutros',y:contar(msg[i],"Neutro")} 
+              ];
+              gr(contenedores[i-2],datos,titulos[i-2]);
+            }
+          }
 
-      //Grafica Covid 19
-      grcovid('container6',unir(msg[12],msg[8]),unir(msg[12],msg[9]),unir(msg[12],msg[10]),unir(msg[12],msg[11]),'Covid 19');
+          //Llenar Tabla
+          let tabla = ''
+          for(let i = 0; i < msg[0].length; i++ ){
+            tabla += `<tr><td>${i+1}</td><td>${new Date(msg[0][i]).toLocaleDateString()}</td><td>${msg[1][i]}</td><td>${msg[2][i]}</td><td>${msg[3][i]}</td><td>${msg[4][i]}</td><td>${msg[5][i]}</td><td>${msg[7][i]}</td></tr>`; 
+          }
 
-      //Grafica Sentimientos
-      grln('container7',unir(msg[0],msg[2]),'Analisis de Sentimientos (Jaccard)','Jaccard',0);
-      grln('container8',unir(msg[0],msg[3]),'Analisis de Sentimientos (Coseno)','Coseno',6);
-      grln('container9',unir(msg[0],msg[4]),'Analisis de Sentimientos (TextBlob)','TextBlob',2);
-      grln('container10',unir(msg[0],msg[5]),'Analisis de Sentimientos (SVM)','SVM',3);
-      grln('container11',unir(msg[0],msg[7]),'Analisis de Sentimientos (Voting)','Voting',7);
+          //Mostrar elementos
+          $('#tablat,#container,#container1,#container2,#container3,#container4,#container5,#container6,#container7,#container8,#container9,#container10,#container11').show();
+          $('#tablat tbody tr').remove();
+          $('#tablat').append(tabla);
+          
 
-    },timeout : 9000000,
-    error :function(err){
-      $('#loadingmessage').hide();
-      $('#boton').attr("disabled", false);
-      console.log(err);
-      }
-  })
+          //Grafico wordcloud
+          grnube('container5',msg[13]);
+
+          //Grafica Covid 19
+          grcovid('container6',unir(msg[12],msg[8]),unir(msg[12],msg[9]),unir(msg[12],msg[10]),unir(msg[12],msg[11]),'Covid 19');
+
+          //Grafica Sentimientos
+          grln('container7',unir(msg[0],msg[2]),'Analisis de Sentimientos (Jaccard)','Jaccard',0);
+          grln('container8',unir(msg[0],msg[3]),'Analisis de Sentimientos (Coseno)','Coseno',6);
+          grln('container9',unir(msg[0],msg[4]),'Analisis de Sentimientos (TextBlob)','TextBlob',2);
+          grln('container10',unir(msg[0],msg[5]),'Analisis de Sentimientos (SVM)','SVM',3);
+          grln('container11',unir(msg[0],msg[7]),'Analisis de Sentimientos (Voting)','Voting',7);
+
+        },timeout : 9000000,
+        error :function(err){
+          $('#loadingmessage').hide();
+          $('#boton').attr("disabled", false);
+          console.log(err);
+          }
+      })
+    }
 }
 
 
@@ -374,8 +376,10 @@ function contar(lista,polaridad){
         event.preventDefault();
         event.stopPropagation();        
         alert("La fecha final debe ser mayor a la fecha inicial");
-      }      
-    };
+        return false;
+      } 
+  return true;     
+};
 
 
   

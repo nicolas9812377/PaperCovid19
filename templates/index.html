@@ -28,6 +28,7 @@
 	</script>
 	<script src="https://code.highcharts.com/modules/accessibility.js">
 	</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="shortcut icon" href="{{ url_for('static', filename='img/twitter.ico') }}">
 	<link rel="icon" type="image/gif" href="{{ url_for('static', filename='img/twitter.ico') }}">
 </head>
@@ -88,25 +89,42 @@
             <div class="row">
                 <div class="col-md-offset-2 col-md-8">
                     <div class="section-heading">
-                        <h2>Parte 1</h2>
+                        <h2>Análisis de Sentimientos de Tweets</h2>
                         <div class="heading-line"></div>
-                        <p>Similitud en los Corpus del Tweet con Diccionario de Sentimientos </p>
-                        <br>
-                        Cantidad de tweets
-                        <input type="number" min="1" value="10" id="cantidad" name="cantidad" placeholder="Cantidad de Tweets" required="required">
+                        <p> Se podra visualizar las estadisticas </p>
+                        <br>  
+                        <div class="row">
+                          <div class="col-lg-3" style="width: 180px;">                      
+                            <div class="input-group">
+                              <span class="input-group-addon" id="basic-addon1"># Tweets</span>
+                              <input type="number" min="1" value="10" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad de Tweets" aria-label="cantidad" aria-describedby="basic-addon1" required="required">
+                            </div>
+                          </div>
+
+                          <div class="col-lg-3" style="width: 175px;"> 
+                            <div class="input-group">
+                              <span class="input-group-addon" id="basic-addon1">Fecha Inicio</span>
+                              <input type="date" name="fechaInicio" value="2020-09-01" id="fechaInicio" class="form-control"placeholder="Ingrese Fecha de Tweets" required="required">
+                            </div>
+                          </div>
+
+                          <div class="col-lg-3" style="width: 180px;margin-left: 18%;"> 
+                            <div class="input-group">
+                              <span class="input-group-addon" id="basic-addon1">Fecha Fin</span>
+                              <input type="date" name="fechaFin" id="fechaFin" placeholder="Ingrese Fecha de Tweets" class="form-control" required="required">
+                            </div>
+                          </div>
+
+                        </div>
+
                         <br><br>
-                        Fecha de Inicio
-                        <input type="date" name="fechaInicio" value="2020-09-01" id="fechaInicio" placeholder="Ingrese Fecha de Tweets" required="required">
+                        <button type="button" class="btn btn-default" id="boton" value="Consultar" onclick="graficar(event)">
+                          <span class="fa fa-search" aria-hidden="true"></span> Consultar 
+                        </button>               
                         <br><br>
-                        Fecha Fin
-                        <input type="date" name="fechaFin" id="fechaFin" placeholder="Ingrese Fecha de Tweets" required="required">
-                        <br><br>
-                        <input type= "button" id="boton1" value="Validar" onclick="validar(event)" >
-                        <br><br>
-                        <input type= "button" id="boton" value="Consultar" onclick="graficar()" >
                         <div id='loadingmessage' style='display:none'>
-       <img src='{{ url_for('static', filename='img/ajax-loader.gif') }}'/>
-       </div>
+                          <img src='{{ url_for('static', filename='img/ajax-loader.gif') }}'/>
+                        </div>
        <br>
        <br>             
                       <table class="table table-borderless table-hover">
