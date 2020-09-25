@@ -4,7 +4,6 @@ from controlador import modulo_coseno as cs
 from controlador import modulo_tweets as tw
 from controlador import modulo_lec_escri as lc
 from controlador import modulo_maquinavec as mv
-from controlador import modulo_api as api
 from textblob import TextBlob
 import gensim
 import pyLDAvis
@@ -114,16 +113,9 @@ def literal1(n, fechaInicio, fechaFin):
     rs.append(cp) #Coseno
     rs.append(txtblob) #textblob
     rs.append(svm) #SVM
+    rs.append(voting(jp,cp,txtblob,svm))
     #rs.append(topicmodeling(tweet))
     rs.append([])
-    rs.append(voting(jp,cp,txtblob,svm))
-    #Resultados api
-    confirmados,muertos,recuperados,activos,fecha = api.obtenerInfo()
-    rs.append(confirmados)
-    rs.append(muertos)
-    rs.append(recuperados)
-    rs.append(activos)
-    rs.append(fecha)
     vec_nube_temp = []
     for review in tweet:
       for review1 in review:

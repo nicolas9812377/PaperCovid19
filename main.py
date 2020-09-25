@@ -1,5 +1,6 @@
-from flask import Flask, render_template,request,Response
+from flask import Flask, render_template,request
 from controlador import procesos as p  
+from controlador import modulo_api as api
 import json
 app = Flask(__name__)
 
@@ -17,6 +18,19 @@ def recibircant():
 def topic():
   with open('templates/LDA_Visualization.html') as file:
     return file.read(),200,{'Content-Type': 'text/html; charset=utf-8'}
+
+@app.route('/api',methods=['GET','POST'])
+def apid():
+  if request.method == 'POST':
+    rs = []
+    #Resultados api
+    confirmados,muertos,recuperados,activos,fecha = api.obtenerInfo()
+    rs.append(confirmados)
+    rs.append(muertos)
+    rs.append(recuperados)
+    rs.append(activos)
+    rs.append(fecha)
+    return json.dumps(rs),{'Content-Type': 'application/json'}
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0')   
