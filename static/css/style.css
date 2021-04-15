@@ -167,12 +167,13 @@ Navbar
 
 nav.navbar {
     position: fixed;
-    top: -72px;
+    top: -100px;
     margin-bottom: 0px;
     padding: 10px 0px 10px 0px;
     width: 100%;
     border-radius: 0px;
     transition: all 0.2s;
+    height: 100px;
 }
 
 .navbar-nav {
@@ -226,7 +227,7 @@ Home sections
 
 .home-section {
     width: 100%;
-    padding: 150px 0px 150px 0px;
+    padding: 60px 0px 150px 0px;
 }
 
 
@@ -871,9 +872,12 @@ Footer
 ================================= */
 
 footer {
-    background: #00c1c1;
+    background: #ECEEEF;
+    opacity: 1;
     color: #fff;
     padding: 50px 0 30px;
+    background-image: url('/static/img/intro/fondo2.jpg');
+    background-size: contain;
 }
 
 footer a {
@@ -958,4 +962,9 @@ more media queries
     header h1 {
         font-size: 70px;
     }
+}
+
+.navbar-brand{
+  padding: 0px !important ;
+  margin-left: 0px;
 }

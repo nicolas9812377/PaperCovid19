@@ -67,7 +67,7 @@ function grln (contenedor,series,nombre,metodo,color){
             },
             subtitle: {
               text: document.ontouchstart === undefined ?
-                'Click y arrastra en el area del grafico para acercar' : 'Toca el grafico para acercar'
+                'Click y arrastra en el área del gráfico para acercar' : 'Toca el gráfico para acercar'
             },
             title: {
                 text: nombre
@@ -79,7 +79,24 @@ function grln (contenedor,series,nombre,metodo,color){
               title: {
                 text: 'Polaridad'
               },
-              categories: {'-1':'-1 Negativo','0':'0 Neutro','1':'1 Positivo'}
+              categories: {'-1':'-1 Negativo','0':'0 Neutro','1':'1 Positivo'},
+              plotBands: [
+                { // Negativo
+                from: -1,
+                to: 0,
+                color: 'rgba(231, 76, 60, 0.1)',
+                label: {
+                    //text: 'Negativo',
+                    //style: {
+                    //    color: '#E74C3C'
+                    //}
+                }
+              }, { // Positivo
+                    from: 0,
+                    to: 1,
+                    color: 'rgba(46, 204, 113, 0.1)',
+                    
+                  }]
             },credits: {
               enabled: false
             },
@@ -93,8 +110,7 @@ function grln (contenedor,series,nombre,metodo,color){
                     y2: 1
                   },
                   stops: [
-                    [0, Highcharts.getOptions().colors[color]],
-                    [1, Highcharts.color(Highcharts.getOptions().colors[color]).setOpacity(0).get('rgba')]
+                    [0, Highcharts.color(Highcharts.getOptions().colors[color]).setOpacity(0.5).get('rgba')]
                   ]
                 },
                 marker: {
@@ -182,7 +198,7 @@ function grnube (contenedor,data1){
             return obj.name === word;
         });
         if (obj) {
-            obj.weight += 1;
+            obj.weight += 4;
         } else {
             obj = {
                 name: word,
@@ -192,31 +208,7 @@ function grnube (contenedor,data1){
         }
         return arr;
     }, []);
-  /* Nube de palabras personalizadas
-  var makeScale = function (domain, range) {
-    var minDomain = domain[0];
-    var maxDomain = domain[1];
-    var rangeStart = range[0];
-    var rangeEnd = range[1];
-
-    return (value) => {
-        return rangeStart + (rangeEnd - rangeStart) * ((value - minDomain) / (maxDomain - minDomain));
-    }
-  };
-  var minWeight = data.reduce((min, word) =>
-    (word.weight < min ? word.weight : min),
-    data[0].weight
-  );
-  var maxWeight = data.reduce((max, word) =>
-      (word.weight > max ? word.weight : max),
-      data[0].weight
-  );
-  var scale = makeScale([minWeight, maxWeight], [0.5, 1]);
   
-  var scaledData = data.map(word =>
-      ({ name: word.name, weight: word.weight, color: `rgba(60,170,200,${scale(word.weight)})` })
-  );
-  */ 
   var myChart = Highcharts.chart(contenedor, {
     accessibility: {
         screenReaderSection: {
@@ -231,16 +223,21 @@ function grnube (contenedor,data1){
     },
     series: [{
         type: 'wordcloud',
-        data: data.slice(0,50),
+        //spiral: 'archimedean',
+        data: data.splice(0,100),
         name: 'Ocurrencia',
-        minFontSize: 7,
-        rotation: {
-            from: 0,
-            to: 0,
-        },
+        minFontSize: 8,
+        maxFontSize: 27,
         style: {
             fontFamily: 'Arial',
-        }
+            fontWeight: '600'
+        },
+        rotation: {
+            from: -90,
+            to: 180,
+            orientations: 4
+        },
+        colors: ['#1B4F72', '#979A9A', '#148F77', '#515A5A ', '#1F618D']
     }],
     title: {
         text: 'Nube de Palabras sobre los Tweets'
@@ -264,6 +261,9 @@ function graficar(event){
         success: function(msg){
           $('#loadingmessage').hide();
           $('#boton').attr("disabled", false);
+
+          $('#LDA').html('<object type="text/html" data="https://analisis-sentimiento.herokuapp.com/topic" style="width:120%;height:850px;"></object>');
+
           //Lenar Tabla porcentaje
           tporcentaje=['#jp','#jn','#jne','#jt','#cp','#cn','#cne','#ct','#tbp','#tbn','#tbne','#tbt','#svmp','#svmn','#svmne','#svmt','#vp','#vn','#vne','#vt'] 
           //Graficos Pastel
@@ -272,65 +272,71 @@ function graficar(event){
           let pivote = 0
           for(let i = 2; i < 7; i++ ){  
                 let datos = [
-                  {name: 'Positivos',y:contar(msg[i],"Positivo")},
-                  {name: 'Negativos',y:contar(msg[i],"Negativo")},
-                  {name: 'Neutros',y:contar(msg[i],"Neutro")} 
+                  {name: 'Positivos',y:contar(msg[i],1)},
+                  {name: 'Negativos',y:contar(msg[i],-1)},
+                  {name: 'Neutros',y:contar(msg[i],0)} 
                 ];
                 gr(contenedores[i-2],datos,titulos[i-2]);
                 pivote = (i-2)*4
-                $(tporcentaje[pivote]).text((contar(msg[i],"Positivo")/msg[i].length).toFixed(2)+'%');
-                $(tporcentaje[pivote+1]).text((contar(msg[i],"Negativo")/msg[i].length).toFixed(2)+'%');
-                $(tporcentaje[pivote+2]).text((contar(msg[i],"Neutro")/msg[i].length).toFixed(2)+'%');
+                $(tporcentaje[pivote]).text((contar(msg[i],1)/msg[i].length).toFixed(2)+'%');
+                $(tporcentaje[pivote+1]).text((contar(msg[i],-1)/msg[i].length).toFixed(2)+'%');
+                $(tporcentaje[pivote+2]).text((contar(msg[i],0)/msg[i].length).toFixed(2)+'%');
                 $(tporcentaje[pivote+3]).text(msg[i].length);
           }
 
             //Llenar Tabla
           let tabla = ''
           for(let i = 0; i < msg[0].length; i++ ){
-            tabla += `<tr><td>${i+1}</td><td>${new Date(msg[0][i]).toLocaleDateString()}</td><td>${msg[1][i]}</td><td>${msg[2][i]}</td><td>${msg[3][i]}</td><td>${msg[4][i]}</td><td>${msg[5][i]}</td><td>${msg[6][i]}</td></tr>`; 
+            tabla += `<tr><td>${i+1}</td><td>${new Date(msg[0][i]).toLocaleDateString()}</td><td>${msg[1][i]}</td><td>${significado(msg[2][i])}</td><td>${significado(msg[3][i])}</td><td>${significado(msg[4][i])}</td><td>${significado(msg[5][i])}</td><td>${significado(msg[6][i])}</td></tr>`; 
           }
 
           //Mostrar elementos
           $('#tablat,#container,#container1,#container2,#container3,#container4,#container5,#container7,#container8,#container9,#container10,#container11').show();
           $('#tablat tbody tr').remove();
           $('#tablat').append(tabla);
-  
+
+          
 
           //Grafico wordcloud
-          grnube('container5',msg[8]);
+          grnube('container5',msg[7]);
 
           //Grafica Sentimientos
-          grln('container7',unir(msg[0],msg[2]),'Analisis de Sentimientos (Jaccard)','Jaccard',0);
-          grln('container8',unir(msg[0],msg[3]),'Analisis de Sentimientos (Coseno)','Coseno',6);
-          grln('container9',unir(msg[0],msg[4]),'Analisis de Sentimientos (TextBlob)','TextBlob',2);
-          grln('container10',unir(msg[0],msg[5]),'Analisis de Sentimientos (SVM)','SVM',3);
-          grln('container11',unir(msg[0],msg[6]),'Analisis de Sentimientos (Voting)','Voting',7);
+          grln('container7',unir(msg[0],msg[2]),'Análisis de Sentimientos (Jaccard)','Jaccard',0);
+          grln('container8',unir(msg[0],msg[3]),'Análisis de Sentimientos (Coseno)','Coseno',6);
+          grln('container9',unir(msg[0],msg[4]),'Análisis de Sentimientos (TextBlob)','TextBlob',2);
+          grln('container10',unir(msg[0],msg[5]),'Análisis de Sentimientos (SVM)','SVM',3);
+          grln('container11',unir(msg[0],msg[6]),'Análisis de Sentimientos (Voting)','Voting',7);
+
+          
+          
 
         },timeout : 9000000,
         error :function(err){
           $('#loadingmessage').hide();
           $('#boton').attr("disabled", false);
           console.log(err);
+          alert("Ha ocurrido un error");
           }
       })
     }
 }
 
-
+function significado(datos){
+    if(datos == 1)
+      return "Positivo";
+    else if(datos == 0)
+      return "Neutro";
+    else if(datos == -1)
+      return "Negativo";
+}
 
 function unir(fecha,datos){
   vectorGrafico=[];
   for(let i=0;i<datos.length;i++){
     temp=[];
     temp.push(new Date(fecha[i]).getTime());
-    if(datos[i] == "Positivo")
-      temp.push(1);
-    else if(datos[i] == "Neutro")
-      temp.push(0);
-    else if(datos[i] == "Negativo")
-      temp.push(-1);
-    else if(datos[i] != "na")
-      temp.push(datos[i])
+    if(datos[i] != "na")
+      temp.push(datos[i]);
     vectorGrafico.push(temp);
   }
   return vectorGrafico;

@@ -4,7 +4,7 @@ from controlador import nlp as nl
 
 
 def maqvec(tweets):
-  #leer diccionario
+  #leer diccionario quemado para optimizar tiempo
   dic = lc.leerTxt('modelo/dic_datasetGlobal.txt')
 
   '''
@@ -17,8 +17,8 @@ def maqvec(tweets):
   
   '''
   tt1 = nl.stemmer(tweets)
-  
-  print('Generando Bolsa de Palabras')
+  #tt1 = tweets
+
   bolsa1 = nl.inverted(tt1,dic)  
   bolsa1 = np.array(bolsa1).T
 
@@ -28,15 +28,7 @@ def maqvec(tweets):
 
   #Realizo una predicción
   y_pred = loaded_model.predict(bolsa1)
-  sentimiento = []
-  for tweet in y_pred.tolist():
-    if(int(tweet) == -1):
-      sentimiento.append('Negativo')
-    elif (int(tweet) == 0):
-      sentimiento.append('Neutro')
-    elif (int(tweet) == 1):
-      sentimiento.append('Positivo')  
-  return sentimiento
+  return [int(i) for i in y_pred.tolist()]
   
 
 '''

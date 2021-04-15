@@ -5,23 +5,26 @@ a, a:hover {
 
 /* Back to top button */
 .back-to-top {
-  background: #00c1c1;
+  background: rgb(14, 11, 61);
   color: #fff;
 }
 
 
 .back-to-top:focus {
-  background: #00c1c1;
+  background: rgb(30, 23, 122);
   color: #fff;
 }
 
 .back-to-top:hover {
-  background: #019090;
+  background: rgb(22, 21, 112);
   color: #fff;
 }
 
 .navbar-default {
-  background: #00c1c1;
+  /*background: #F1C40F   ;*/
+  background-image: url('/static/img/intro/fondo3.jpg');
+  background-size: contain;
+  background-color:#ECEEEF;
 }
 
 .form-control:focus {

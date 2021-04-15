@@ -16,21 +16,21 @@ def obtenerTweets(n,fechaInicio,fechaFin):
           'result_type': 'recent',
           'lang': 'es',
           'geocode': '-1.95529,-78.70604,350km',
-          'since': fechaInicio,
-          'until' : fechaFin,
+          #'since': fechaInicio,
+          #'until' : fechaFin,
           'tweet_mode' :'extended'
           }
   t= []
   fecha = []
  
   for x,tweet in enumerate(tweepy.Cursor(api.search, **query).items(n)):
+    #for tweet in tweet1:
     try:
       if(tweet.retweeted_status.full_text.replace('\n', ' ') not in t):
-        fecha.append(str(tweet.created_at))
-        
+        fecha.append(str(tweet.created_at))  
         t.append(tweet.retweeted_status.full_text.replace('\n', ' '))
     except:
-     if(tweet.full_text.replace('\n', ' ') not in t):
-      fecha.append(str(tweet.created_at))
-      t.append(tweet.full_text.replace('\n', ' '))
+      if(tweet.full_text.replace('\n', ' ') not in t):
+        fecha.append(str(tweet.created_at))
+        t.append(tweet.full_text.replace('\n', ' '))
   return t,fecha

@@ -6,304 +6,268 @@
 
 	<meta charset="utf-8" />
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	<!-- css -->
+	
+  <!-- css -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,300,700,800" rel="stylesheet" media="screen">
-
 	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
-	<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
-	<link href="{{ url_for('static', filename='color/default.css') }}" rel="stylesheet" media="screen">
-
-	<script src="{{ url_for('static', filename='js/scripts.js') }}">
-
-	</script>
-	<script src="https://code.highcharts.com/highcharts.js">
-
-	</script>
-	<script src="https://code.highcharts.com/modules/data.js">
-
-	</script>
-	<script src="https://code.highcharts.com/modules/wordcloud.js">
-
-	</script>
-	<!--<script src="https://code.highcharts.com/modules/series-label.js"></script>-->
-	<script src="https://code.highcharts.com/modules/exporting.js">
-
-	</script>
-	<script src="https://code.highcharts.com/modules/export-data.js">
-
-	</script>
-	<script src="https://code.highcharts.com/modules/accessibility.js">
-
-	</script>
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
+  <link href="{{ url_for('static', filename='color/default.css') }}" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="shortcut icon" href="{{ url_for('static', filename='img/twitter.ico') }}">
 	<link rel="icon" type="image/gif" href="{{ url_for('static', filename='img/twitter.ico') }}">
+
 </head>
 
 <body onload="onload()">
 
 	<!-- Navigation -->
-
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-          <span class="sr-only">Toggle nav</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
+			<!-- Logo Start -->
+      <a class="navbar-brand" href="#" >
+        <img src="{{ url_for('static', filename='img/logo_ai_ingles.png') }}" alt="IDEIAGEOCA"  height="70">
+      </a>
 
-       <!-- Logo text or image -->
-      `<a class="navbar-brand" href="/">COVID 19</a>
-      </div>
-    
-      <div class="navigation collapse navbar-collapse navbar-ex1-collapse">
-        <ul class="nav navbar-nav">
-          <li class="current"><a href="#intro">Inicio</a></li>
-          <li><a href="#parte1">Tweet</a></li>
-          <li><a href="#visualizacion">Visualización</a></li>
-        </ul>
-      </div>
+      <!-- Logo End -->
+      <a style="float:right; margin-left: 15px" href="#" >
+        <img src="{{ url_for('static', filename='img/grupoI-ingles.png') }}" alt="IDEIAGEOCA" height="70">
+      </a>
     </div>
   </nav>
 
-    <!-- intro area -->
-    <section id="intro">
-        <div class="intro-container">
-            <div id="introCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+  <!-- intro area -->
+  <section id="intro">
+    <div class="intro-container">
+      <div id="introCarousel" class="carousel slide carousel-fade" data-ride="carousel">
 
-                <div class="carousel-inner" role="listbox">
-                    <!-- Slide 1 -->
-                    <div class="item active">
-                        <div class="carousel-background"><img src="{{ url_for('static', filename='img/intro/fondo1.png') }}" alt=""></div>
-                        <div class="carousel-container">
-                            <div class="carousel-content">
-                                <h2 class="animated fadeInDown">Análisis De Sentimientos</h2>
-                                <p class="animated fadeInUp">Enfocado en los tweets de las personas con respecto al covid-19</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Pegar si desean Slide 2 -->
-                </div>
+        <div class="carousel-inner" role="listbox">
+          <!-- Slide 1 -->
+          <div class="item active">
+            <div class="carousel-background"><img src="{{ url_for('static', filename='img/intro/fondo1.jpg') }}" alt=""></div>
+            
+            <div class="carousel-container">
+              <div class="carousel-content">
+                <h2 class="animated fadeInDown">Análisis De Sentimientos</h2>
+                <p class="animated fadeInUp">En contraste con los datos oficiales durante la pandemia del Covid-19 en Ecuador</p>
+              </div>
             </div>
-    </section>
-    <!-- #intro -->
-
-    <!-- Tweet -->
-    <section id="parte1" class="home-section bg-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-offset-2 col-md-8">
-                    <div class="section-heading">
-                        <h2>Análisis de Sentimientos de Tweets</h2>
-                        <div class="heading-line"></div>
-                        <p> Se podra visualizar las estadisticas </p>
-                        <br>  
-                        <div class="row">
-                          <div class="col-lg-3" style="width: 180px;">                      
-                            <div class="input-group">
-                              <span class="input-group-addon" id="basic-addon1"># Tweets</span>
-                              <input type="number" min="1" value="10" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad de Tweets" aria-label="cantidad" aria-describedby="basic-addon1" required="required">
-                            </div>
-                          </div>
-
-                        <div class="col-lg-3" style="width: 175px;"> 
-                          <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1">Fecha Inicio</span>
-                              <input type="date" name="fechaInicio" value="2020-09-01" id="fechaInicio" class="form-control"placeholder="Ingrese Fecha de Tweets" required="required">
-                          </div>
-                        </div>
-
-                        <div class="col-lg-3" style="width: 180px;margin-left: 18%;"> 
-                          <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1">Fecha Fin</span>
-                            <input type="date" name="fechaFin" id="fechaFin" placeholder="Ingrese Fecha de Tweets" class="form-control" required="required">
-                          </div>
-                        </div>
-                      </div>
-
-                      <br><br>
-                      <button type="button" class="btn btn-default" id="boton" value="Consultar" onclick="graficar(event)">
-                        <span class="fa fa-search" aria-hidden="true"></span> Consultar 
-                      </button>               
-                      
-                      <br><br>
-                      
-                      <div id='loadingmessage' style='display:none'>
-                        <img src='{{ url_for('static', filename='img/ajax-loader.gif') }}'/>
-                      </div>
-                      
-                      <br><br>  
-
-                      <!--Items Tabs -->
-                      <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-                        <li class="nav-item active">
-                          <a class="nav-link" id="tp-tab" data-toggle="tab" href="#tp" role="tab" aria-controls="tp" aria-selected="true">Tabla Porcentajes</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" id="gp-tab" data-toggle="tab" href="#gp" role="tab" aria-controls="gp" aria-selected="false">Gráficos Porcentaje</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" id="tweet-tab" data-toggle="tab" href="#tweet" role="tab" aria-controls="tweet" aria-selected="false">Tweets</a>
-                        </li>
-                      </ul>
-
-                      <!--Panel Tabs -->
-                      <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade active in" id="tp" role="tabpanel" aria-labelledby="tp-tab">
-                          <!--Tabla Porcentajes --> 
-                          <table class="table table-borderless table-hover" id="tablap" style="margin-top:5%;">
-                            <thead >
-                              <tr>
-                                <th></th><th>Jaccard</th><th >Coseno Vectorial</th><th >Text Blob</th><th >SVM</th> <th>Voting</th>
-                              </tr>
-                            </thead>
-
-                            <tbody>
-                              <tr>
-                                <td>Positivos</td><td id="jp">0%</td><td id="cp">0%</td><td id="tbp">0%</td><td id="svmp">0%</td><td id="vp">0%</td>
-                              </tr>
-                              
-                              <tr>
-                                <td>Negativos</td><td id="jn">0%</td><td id="cn">0%</td><td id="tbn">0%</td><td id="svmn">0%</td><td id="vn">0%</td>
-                              </tr>
-                              
-                              <tr>
-                                <td>Neutros</td><td id="jne">0%</td><td id="cne">0%</td><td id="tbne">0%</td><td id="svmne">0%</td><td id="vne">0%</td>
-                              </tr>
-                            
-                              <tr>
-                                <td>Total Tweets</td><td id="jt">0</td><td id="ct">0</td><td id="tbt">0</td><td id="svmt">0</td><td id="vt">0</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-
-                        <div class="tab-pane fade" id="gp" role="tabpanel" aria-labelledby="gp-tab">
-                          <!--Grafico Porcentajes -->                
-                          <div style="width:100%;margin-top:5%;">  
-                                <div id="container" style="display:none;float:left;width:45%;height:310px;"></div>
-                                <div id="container1" style="display:none;float:right;width:45%; height:310px;"></div>
-                                <div id="container2" style="display:none;float:left;width:45%; height:310px;"></div>
-                                <div id="container3" style="display:none;float:right;width:45%; height:310px;"></div>
-                                <div id="container4" style="display:none;float:left;width:45%; height:310px;"></div>
-                          </div>
-                        </div>
-
-                        <div class="tab-pane fade" id="tweet" role="tabpanel" aria-labelledby="tweet-tab">
-                          <!--Tabla Tweets -->
-                          <div class="table-responsive" style="height:600px !important; width: 110%;margin-top: 5%;margin-left:-3%;">
-                            <table id="tablat" class="table table-striped" style='display:none'>
-                            <thead class="thead-light">
-                            <tr>
-                            <th>ID</th><th>Fecha</th><th>Tweets</th><th>Jaccard</th><th>Coseno Vectorial</th><th>Text Blob</th><th>SVM</th><th>Voting</th>
-                            </tr>
-                            </thead>
-                            <tbody style="text-align:left"></tbody>
-                            </table>
-                          </div> 
-                        </div>
-                      </div>  
-
-                    </div>
-                </div>
-            </div>
+          </div>            
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- Tweet -->
+  <section id="parte1" class="home-section bg-white" style="margin-top: 100px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <div class="section-heading">
+            <h2>Análisis de Sentimientos de Tweets</h2>
+            <div class="heading-line"></div>
+            <p> Rango máximo de 7 dias antes de la fecha actual </p>
+            <br>  
+            <div class="row">
+              <div class="col-md-3 mb-3"> 
+                <label for="cantidad"># Tweets</label>
+                <input type="number" min="1" value="10" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad de Tweets" aria-label="cantidad" aria-describedby="basic-addon1" required="required">    
+              </div>
+            
+              <div class="col-md-4 mb-3"> 
+                <label for="fechaInicio">Fecha Inicio</label>
+                <input type="date" name="fechaInicio" value="2020-09-01" id="fechaInicio" class="form-control"placeholder="Ingrese Fecha de Tweets" required="required">
+              </div>
+
+              <div class="col-md-4 mb-3"> 
+                <label for="fechaFin">Fecha Fin</label>
+                <input type="date" name="fechaFin" id="fechaFin" placeholder="Ingrese Fecha de Tweets" class="form-control" required="required">
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="boton" value="Consultar" onclick="graficar(event)">
+          <span class="fa fa-search" aria-hidden="true"></span> Consultar 
+          </button>               
+              
+          <br><br>            
+          <div id='loadingmessage' style='display:none'>
+            <img src='{{ url_for('static', filename='img/ajax-loader.gif') }}'/>
+          </div>
+                      
+          <br><br>  
+          <!--Items Tabs -->
+          <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+            <li class="nav-item active">
+              <a class="nav-link" id="tp-tab" data-toggle="tab" href="#tp" role="tab" aria-controls="tp" aria-selected="true">Algoritmos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="gp-tab" data-toggle="tab" href="#gp" role="tab" aria-controls="gp" aria-selected="false">Gráficos Estadísticos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="tweet-tab" data-toggle="tab" href="#tweet" role="tab" aria-controls="tweet" aria-selected="false">Tweets</a>
+            </li>
+          </ul>
+
+          <!--Panel Tabs -->
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade active in" id="tp" role="tabpanel" aria-labelledby="tp-tab">
+              <!--Tabla Porcentajes --> 
+              <table class="table table-borderless table-hover" id="tablap" style="margin-top:5%;">
+                <thead >
+                  <tr>
+                    <th></th><th>Jaccard</th><th >Coseno Vectorial</th><th >Text Blob</th><th >SVM</th> <th>Votación por Mayoría</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Positivos</td><td id="jp">0%</td><td id="cp">0%</td><td id="tbp">0%</td><td id="svmp">0%</td><td id="vp">0%</td>
+                  </tr>
+                                
+                  <tr>
+                    <td>Negativos</td><td id="jn">0%</td><td id="cn">0%</td><td id="tbn">0%</td><td id="svmn">0%</td><td id="vn">0%</td>
+                  </tr>
+                                
+                  <tr>
+                    <td>Neutros</td><td id="jne">0%</td><td id="cne">0%</td><td id="tbne">0%</td><td id="svmne">0%</td><td id="vne">0%</td>
+                  </tr>
+                              
+                  <tr>
+                    <td>Total Tweets</td><td id="jt">0</td><td id="ct">0</td><td id="tbt">0</td><td id="svmt">0</td><td id="vt">0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="tab-pane fade" id="gp" role="tabpanel" aria-labelledby="gp-tab">
+              <!--Grafico Porcentajes -->                
+              <div style="width:100%;margin-top:5%;">  
+                <div id="container" style="display:none;float:left;width:45%;height:310px;"></div>
+                <div id="container1" style="display:none;float:right;width:45%; height:310px;"></div>
+                <div id="container2" style="display:none;float:left;width:45%; height:310px;"></div>
+                <div id="container3" style="display:none;float:right;width:45%; height:310px;"></div>
+                <div id="container4" style="display:none;float:left;width:45%; height:310px;"></div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="tweet" role="tabpanel" aria-labelledby="tweet-tab">
+              <!--Tabla Tweets -->
+              <div class="table-responsive" style="height:600px !important; width: 110%;margin-top: 5%;margin-left:-3%;">
+                <table id="tablat" class="table table-striped" style='display:none'>
+                  <thead class="thead-light">
+                    <tr>
+                      <th>ID</th><th>Fecha</th><th>Tweets</th><th>Jaccard</th><th>Coseno Vectorial</th><th>Text Blob</th><th>SVM</th><th>Votación por Mayoría</th>
+                    </tr>
+                  </thead>
+                  <tbody style="text-align:left"></tbody>
+                </table>
+              </div> 
+            </div>
+          </div>  
+
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Visualizacion -->
   <section id="parte2" class="home-section bg-gray">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-offset-2 col-md-8">
-                    <div class="section-heading">
-                        <h2>Visualización</h2>
-                        <div class="heading-line"></div>
-                        <p> </p>
-                      </div>
-                     <div id='loadingmessage2' style='display:none'>
-                      <img src='{{ url_for('static', filename='img/ajax-loader.gif') }}'/>
-                    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <div class="section-heading">
+            <h2>Visualización</h2>
+            <div class="heading-line"></div>
+            <p> </p>
+          </div>
+          <div id='loadingmessage2' style='display:none'>
+            <img src='{{ url_for('static', filename='img/ajax-loader.gif') }}'/>
+          </div>
 
-                      <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-                        <li class="nav-item active">
-                          <a class="nav-link" id="covid-tab" data-toggle="tab" href="#covid" role="tab" aria-controls="covid" aria-selected="false">Covid 19</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link " id="nube-tab" data-toggle="tab" href="#nube" role="tab" aria-controls="nube" aria-selected="true">Nube de Palabras</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" id="LDA-tab" data-toggle="tab" href="#LDA" role="tab" aria-controls="LDA" aria-selected="false">LDA</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" id="sentimientos-tab" data-toggle="tab" href="#sentimientos" role="tab" aria-controls="sentimientos" aria-selected="false">Sentimientos</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                      <div class="tab-pane fade active in" id="covid" role="tabpanel" aria-labelledby="covid-tab">
-                        <div id="container6" style="width:100%;margin-top:5%; height:370px;"></div>
-                      </div>
-                      
-                      <div class="tab-pane fade" id="nube" role="tabpanel" aria-labelledby="nube-tab">
-                        <div id="container5" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
-                      </div>
-                      
-                      <div class="tab-pane fade" id="LDA" role="tabpanel" aria-labelledby="LDA-tab">
-                        <object type="text/html" data="https://analisis-sentimiento.herokuapp.com/topic" style="width:120%;height:850px;"></object>
-                      </div>
-                      
-                      <div class="tab-pane fade" id="sentimientos" role="tabpanel" aria-labelledby="sentimientos-tab">
-                        <div id="container7" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
-                        <div id="container8" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
-                        <div id="container9" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
-                        <div id="container10" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
-                        <div id="container11" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
-                      </div>
-                    </div>
-                    
-                    </div>
-                </div>
+          <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+            <li class="nav-item active">
+              <a class="nav-link" id="covid-tab" data-toggle="tab" href="#covid" role="tab" aria-controls="covid" aria-selected="false">Covid 19</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " id="nube-tab" data-toggle="tab" href="#nube" role="tab" aria-controls="nube" aria-selected="true">Nube de Palabras</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="LDA-tab" data-toggle="tab" href="#LDA" role="tab" aria-controls="LDA" aria-selected="false">LDA</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="sentimientos-tab" data-toggle="tab" href="#sentimientos" role="tab" aria-controls="sentimientos" aria-selected="false">Sentimientos</a>
+            </li>
+          </ul>
+          
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade active in" id="covid" role="tabpanel" aria-labelledby="covid-tab">
+              <div id="container6" style="width:100%;margin-top:5%; height:370px;"></div>
             </div>
+                      
+            <div class="tab-pane fade" id="nube" role="tabpanel" aria-labelledby="nube-tab">
+              <div id="container5" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
+            </div>
+                      
+            <div class="tab-pane fade" id="LDA" role="tabpanel" aria-labelledby="LDA-tab">
+              <object type="text/html" data="https://analisis-sentimiento.herokuapp.com/topic" style="width:120%;height:850px;"></object>
+            </div>
+                     
+            <div class="tab-pane fade" id="sentimientos" role="tabpanel" aria-labelledby="sentimientos-tab">
+              <div id="container7" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
+              
+              <div id="container8" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
+              
+              <div id="container9" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
+              
+              <div id="container10" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
+              
+              <div id="container11" style="display:none;width:100%;margin-top:5%; height:370px;"></div>
+            </div>
+          </div>            
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
 
     
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <!--<p>Copyright &copy; JANMP. All rights reserved 2020.</p>-->
-                    <div class="credits">      
-                        <!--Diseñado por:
-                        Nicolas Carrasco -
-                        Alisson Mendoza - 
-                        Paul Pazos - 
-                        Jerssona Iza - 
-                        Maria Jose Jacome--> 
-                    </div>
-                </div>
-            </div>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12" style="text-align:center;">
+          <a href="#">
+            <img src="{{ url_for('static', filename='img/logo_ups.png') }}" alt="IDEIAGEOCA" height="50">
+          </a>
         </div>
-    </footer>
+      </div>
+    </div>
+  </footer>
 
-    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+  <!-- Back-to-top -->
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 
-    <!-- js -->
-    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/wow.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.scrollTo.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.nav.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/modernizr.custom.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/grid.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/stellar.js') }}"></script>
+  <!-- js -->
+  <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/wow.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.scrollTo.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.nav.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/modernizr.custom.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/grid.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/stellar.js') }}"></script>
   
-    <!-- Template Custom Javascript File -->
-    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
-    
+  <!-- Template Custom Javascript File -->
+  <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/data.js"></script>
+	<script src="https://code.highcharts.com/modules/wordcloud.js"></script>
+	<!--<script src="https://code.highcharts.com/modules/series-label.js"></script>-->
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  
 </body>
 
 </html>

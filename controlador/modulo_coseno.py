@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from controlador import nlp as nl
 #############wtf#########################
 def wtf (vector):
   wtf = []
@@ -79,3 +80,17 @@ def vectordistance(longnorm):
     break
   return temp
 ########################################
+##########Proceso Completo#############
+def coseno(tweet,dic):
+  tweetneg = []
+  tweetneg.append(dic)
+  tweetneg = tweetneg + tweet
+  invertit = nl.inverted(tweetneg, dic)
+  dfP = df(invertit)
+  idfP = idf(dfP, len(invertit[0]))
+  wtfP = wtf(invertit)
+  tfidfP = tfidf(wtfP, idfP)
+  moduloP = modulo(tfidfP)
+  longnorP = longnorm(tfidfP, moduloP)
+  vectorP = vectordistance(longnorP)
+  return vectorP

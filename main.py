@@ -22,15 +22,9 @@ def topic():
 @app.route('/api',methods=['GET','POST'])
 def apid():
   if request.method == 'POST':
-    rs = []
     #Resultados api
     confirmados,muertos,recuperados,activos,fecha = api.obtenerInfo()
-    rs.append(confirmados)
-    rs.append(muertos)
-    rs.append(recuperados)
-    rs.append(activos)
-    rs.append(fecha)
-    return json.dumps(rs),{'Content-Type': 'application/json'}
+    return json.dumps([confirmados,muertos,recuperados,activos,fecha]),{'Content-Type': 'application/json'}
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0')   
