@@ -43,16 +43,20 @@ def literal1(n, fechaInicio, fechaFin):
     #Proceso Nube
     vec_nube_temp = []
     for review in tweet:
-      for review1 in review:
-        vec_nube_temp.append(review1)
-    
+      vec_nube_temp += review
+
     #Obteniendo Diccionarios
     dicposi = lc.leerTxt('modelo/dic_posi.txt')
     dicneg = lc.leerTxt('modelo/dic_neg.txt')
 
     #Cantidad Tweets
     print("Cantidad de tweets: " +str(len(tweet)))
-
+    #"""
+    print("\n-- Topic Modeling --")
+    hilo = Thread(target=tpm.topicmodeling, args=(tweet,))
+    hilo.start()
+    hilo.join()
+    #"""
     print("-- Jaccard --")
     #Jaccard de Negativos
     negativo = ja.vectores(tweet, dicneg)
@@ -78,12 +82,7 @@ def literal1(n, fechaInicio, fechaFin):
 
     print("\n-- Voting --")
     rsVoting = vt.voting(rsJaccard,rsCoseno,rsTextBlob,rsSVM)
-
-    print("\n-- Topic Modeling --")
-    hilo = Thread(target=tpm.topicmodeling, args=(tweet,))
-    hilo.start()
-    hilo.join()
-
+    
     print("-- Envio al servidor --")
     rs = []
     rs.append(fecha) #fecha

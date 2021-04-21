@@ -1,3 +1,7 @@
+var Pconfirmados = 0;
+var Pmuertos = 0;
+var Precuperados = 0;
+var Pactivos = 0;
 function onload(){
   $(document).ready( function() {
       $('#fechaFin').val(new Date().getFullYear()+"-"+
@@ -8,8 +12,27 @@ function onload(){
         url: '/api',
         type: 'POST',
         success: function(msg){
+          Pconfirmados = unir(msg[4],msg[0]);
+          Pmuertos = unir(msg[4],msg[1]);
+          Precuperados = unir(msg[4],msg[2]);
+          Pactivos = unir(msg[4],msg[3]);
           //Grafica Covid 19
-          grcovid('container6',unir(msg[4],msg[0]),unir(msg[4],msg[1]),unir(msg[4],msg[2]),unir(msg[4],msg[3]),'Covid 19');
+          let referencia = [
+            {
+                name: "Confirmados",
+                data: Pconfirmados,
+              },{
+                name: "Muertos",
+                data: Pmuertos,
+              },{
+                name: "Recuperados",
+                data: Precuperados,
+              },{
+                name: "Activos",
+                data: Pactivos,
+              }
+          ]
+          grcovid('container6',referencia,'Covid 19');
         },
         error :function(err){
           console.log(err);
@@ -134,7 +157,7 @@ function grln (contenedor,series,nombre,metodo,color){
         });
 }
 
-function grcovid (contenedor,confirmados,muertos,recuperados,activos,nombre){
+function grcovid (contenedor,datos,nombre){
       var myChart = Highcharts.chart(contenedor, {
         
             chart: {
@@ -175,19 +198,7 @@ function grcovid (contenedor,confirmados,muertos,recuperados,activos,nombre){
                 pointStart: 2010
               }  
             },         
-            series: [{
-              name: "Confirmados",
-              data: confirmados,
-            },{
-              name: "Muertos",
-              data: muertos,
-            },{
-              name: "Recuperados",
-              data: recuperados,
-            },{
-              name: "Activos",
-              data: activos,
-            }]
+            series: datos
         });
 }
 
@@ -250,7 +261,7 @@ function graficar(event){
     $('#loadingmessage').show();
     $('#boton').attr("disabled", true);
     //Ocultar todo
-    $('#tablat,#container,#container1,#container2,#container3,#container4,#container5,#container7,#container8,#container9,#container10,#container11').hide();
+    $('#tablat,#container,#container1,#container2,#container3,#container4,#container5,#container7,#container8,#container9,#container10,#container11,#container12').hide();
     $('#tablat tbody tr').remove();
     vaciarPorcentaje();
     $.ajax({
@@ -284,14 +295,14 @@ function graficar(event){
                 $(tporcentaje[pivote+3]).text(msg[i].length);
           }
 
-            //Llenar Tabla
+          //Llenar Tabla
           let tabla = ''
           for(let i = 0; i < msg[0].length; i++ ){
             tabla += `<tr><td>${i+1}</td><td>${new Date(msg[0][i]).toLocaleDateString()}</td><td>${msg[1][i]}</td><td>${significado(msg[2][i])}</td><td>${significado(msg[3][i])}</td><td>${significado(msg[4][i])}</td><td>${significado(msg[5][i])}</td><td>${significado(msg[6][i])}</td></tr>`; 
           }
 
           //Mostrar elementos
-          $('#tablat,#container,#container1,#container2,#container3,#container4,#container5,#container7,#container8,#container9,#container10,#container11').show();
+          $('#tablat,#container,#container1,#container2,#container3,#container4,#container5,#container7,#container8,#container9,#container10,#container11,#container12').show();
           $('#tablat tbody tr').remove();
           $('#tablat').append(tabla);
 
@@ -307,9 +318,25 @@ function graficar(event){
           grln('container10',unir(msg[0],msg[5]),'Análisis de Sentimientos (SVM)','SVM',3);
           grln('container11',unir(msg[0],msg[6]),'Análisis de Sentimientos (Voting)','Voting',7);
 
-          
-          
-
+          //Para unir API COVID vs Voting
+          let referencia = [
+                            {
+                              name: "Confirmados",
+                              data: Pconfirmados,
+                            },{
+                              name: "Muertos",
+                              data: Pmuertos,
+                            },{
+                              name: "Recuperados",
+                              data: Precuperados,
+                            },{
+                              name: "Activos",
+                              data: Pactivos,
+                            },{
+                              name: "Voting",
+                              data: unir(msg[0],msg[6])
+                            }];
+          grcovid('container12',referencia,'Api Covid vs Voting'); 
         },timeout : 9000000,
         error :function(err){
           $('#loadingmessage').hide();

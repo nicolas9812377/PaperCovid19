@@ -29,10 +29,10 @@ def maqvec(tweets):
   #Realizo una predicción
   y_pred = loaded_model.predict(bolsa1)
   return [int(i) for i in y_pred.tolist()]
-  
+
 
 '''
-Lo que guarda en el modelo entrenado
+#Lo que guarda en el modelo entrenado
 #Lee el DatasetGlobal.csv
   tt,etiquetado = lc.leercsv('modelo/datasetGlobal.csv')
   #Proceso NLP
