@@ -4,21 +4,12 @@ from controlador import nlp as nl
 
 
 def maqvec(tweets):
+  #'''
   #leer diccionario quemado para optimizar tiempo
   dic = lc.leerTxt('modelo/dic_datasetGlobal.txt')
 
-  '''
-  #BOlsa y diccionario tweets consultados
-  #Proceso NLP
-  tt1 = nl.minusculas(tweets)
-  tt1 = nl.eliminarce(tt1)
-  tt1 = nl.tokenizar(tt1)
-  tt1 = nl.qstopwords(tt1,1)
-  
-  '''
   tt1 = nl.stemmer(tweets)
-  #tt1 = tweets
-
+  #BOLSA
   bolsa1 = nl.inverted(tt1,dic)  
   bolsa1 = np.array(bolsa1).T
 
@@ -29,7 +20,7 @@ def maqvec(tweets):
   #Realizo una predicción
   y_pred = loaded_model.predict(bolsa1)
   return [int(i) for i in y_pred.tolist()]
-
+  #'''
 
 '''
 #Lo que guarda en el modelo entrenado
@@ -55,12 +46,20 @@ def maqvec(tweets):
   X = np.array(bolsa).T
   y = np.array(etiquetado)
   
+  #Separar tweets
+  from sklearn.model_selection import train_test_split
+  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
   #Defino el algoritmo a utilizar
   from sklearn.svm import SVC
   algoritmo = SVC(kernel='linear')
   #Entreno el modelo
-  algoritmo.fit(X, y)
-
+  algoritmo.fit(X_train, y_train)
+  #Realizo una predicción
+  y_pred = algoritmo.predict(X_test)
+  #matriz de confusion
+  from sklearn.metrics import confusion_matrix
+  matriz = confusion_matrix(y_test, y_pred)
+  print(matriz)
   #importar diccionario
   import pickle
   pickle.dump(algoritmo, open('modelo/SVM.pkl', 'wb'))

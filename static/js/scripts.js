@@ -17,22 +17,8 @@ function onload(){
           Precuperados = unir(msg[4],msg[2]);
           Pactivos = unir(msg[4],msg[3]);
           //Grafica Covid 19
-          let referencia = [
-            {
-                name: "Confirmados",
-                data: Pconfirmados,
-              },{
-                name: "Muertos",
-                data: Pmuertos,
-              },{
-                name: "Recuperados",
-                data: Precuperados,
-              },{
-                name: "Activos",
-                data: Pactivos,
-              }
-          ]
-          grcovid('container6',referencia,'Covid 19');
+          //let referencia = [{name: "Confirmados",data: Pconfirmados},{name: "Muertos",data: Pmuertos},{name: "Recuperados",data: Precuperados},{name: "Activos",data: Pactivos}]
+          //grcovid('container6',referencia,'Covid 19');
         },
         error :function(err){
           console.log(err);
@@ -125,6 +111,7 @@ function grln (contenedor,series,nombre,metodo,color){
             },
             plotOptions: {
               area: {
+                animation: true,
                 fillColor: {
                   linearGradient: {
                     x1: 0,
@@ -161,8 +148,8 @@ function grcovid (contenedor,datos,nombre){
       var myChart = Highcharts.chart(contenedor, {
         
             chart: {
-                type: 'line',
-                zoomType: 'x'
+                zoomType: 'x',
+                plotBorderWidth: 1
             },
             subtitle: {
               text: document.ontouchstart === undefined ?
@@ -175,9 +162,9 @@ function grcovid (contenedor,datos,nombre){
                 text: 'Fuente: https://covid19api.com/'
             },
             legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'middle'
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom'
             },
             xAxis: {
                 type: 'datetime'
@@ -185,18 +172,20 @@ function grcovid (contenedor,datos,nombre){
             credits: {
               enabled: false
             }, 
-            yAxis: {
+            yAxis: [{
               title: {
                 text: ''
-              },
-            },
+              }
+            }],
             plotOptions: {
               series: {
+                animation: {enabled:true},
                 label: {
-                  connectorAllowed: false
+                  connectorAllowed: true
                 },
-                pointStart: 2010
-              }  
+                pointStart: 0
+              } 
+
             },         
             series: datos
         });
@@ -333,10 +322,15 @@ function graficar(event){
                               name: "Activos",
                               data: Pactivos,
                             },{
-                              name: "Voting",
-                              data: unir(msg[0],msg[6])
+                              type: 'bubble',
+                              name: "Polaridad Sentimiento",
+                              data: unirt(msg[0],msg[6],Pconfirmados[Pconfirmados.length-1][1]),
+                              tooltip: {
+                                  headerFormat: '<b>{series.name}</b><br>',
+                                  pointFormat: '{point.name}'
+                              }
                             }];
-          grcovid('container12',referencia,'Api Covid vs Voting'); 
+          grcovid('container12',referencia,'Datos Covid Vs Análisis de Sentimientos'); 
         },timeout : 9000000,
         error :function(err){
           $('#loadingmessage').hide();
@@ -346,6 +340,20 @@ function graficar(event){
           }
       })
     }
+}
+
+function unirt(fecha,datos,limite){
+  vectorGrafico=[];
+  for(let i=0;i<datos.length;i++){ 
+    console.log(fecha[i]);
+    vectorGrafico.push({
+      x: new Date(fecha[i]).getTime(),
+      y: Math.random()* (limite - 0) + 0,
+      color: (datos[i] == 1)? 'rgba(46, 204, 113, 0.9)': (datos[i] == 0)? 'rgba(186, 191, 188,0.9)' : 'rgba(231, 76, 60, 0.9)',
+      name: (datos[i] == 1)? '1 Positivo': (datos[i] == 0)? '0 Neutro' : '-1 Negativo',
+    });
+  }
+  return vectorGrafico;
 }
 
 function significado(datos){

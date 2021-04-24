@@ -12,7 +12,7 @@ def obtenerTweets(n,fechaInicio,fechaFin):
   # con este objeto realizaremos todas las llamadas al API
   api = tweepy.API(auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
 
-  query = {'q': ['coronavirus','covid','covid-19'],
+  query = {'q': ['coronavirus','covid','pandemia'],
           'result_type': 'recent',
           'lang': 'es',
           'geocode': '-1.95529,-78.70604,350km',
