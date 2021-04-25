@@ -345,7 +345,6 @@ function graficar(event){
 function unirt(fecha,datos,limite){
   vectorGrafico=[];
   for(let i=0;i<datos.length;i++){ 
-    console.log(fecha[i]);
     vectorGrafico.push({
       x: new Date(fecha[i]).getTime(),
       y: Math.random()* (limite - 0) + 0,

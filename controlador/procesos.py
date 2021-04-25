@@ -53,7 +53,7 @@ def literal1(n, fechaInicio, fechaFin):
     print("Cantidad de tweets: " +str(len(tweet)))
 
     print("\n-- Topic Modeling --")
-    tpm.topicmodeling(tweet)
+    #tpm.topicmodeling(tweet)
     #hilo = Thread(target=tpm.topicmodeling, args=(tweet,))
     #hilo.start()
     #hilo.join()
