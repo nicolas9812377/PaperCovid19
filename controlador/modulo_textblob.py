@@ -18,6 +18,7 @@ def textblob(temp1):
         except Exception as e:
             print(e)
             print('corregido error')
-            sentimiento.append('na')
+            sentimiento.append(0)
+            #sentimiento.append('na')
     return sentimiento
 ##################################################
