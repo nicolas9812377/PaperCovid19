@@ -4,8 +4,8 @@ def obtenerTweets(n,fechaInicio,fechaFin):
   # 4 cadenas para la autenticacion
   consumer_key = "cgr7RCgecGri8ECGP6W1uTfdN"
   consumer_secret = "4gvnMkiXnI0IRJPkrvIQSCTJxH1MOLAMKM3lTn1xhTVLB9K4Jy"
-  access_token = "632593702-Meuukj41hpkMbQiBVfZuzkHtlHARxB0jl59jgmVp"
-  access_token_secret = "NblysojLFfIendBE0MXJiM19L2F5EA9iAibSOzIK01wkI"
+  access_token = "632593702-px5GSEM3nsBY6BgEBYz4jNddv895HykaAE4gwaDc"
+  access_token_secret = "IBmI3v4iBZ3UB33vbtFZvqi4ldOwipuj4OxtMZfE7nVQT"
   
   auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
   auth.set_access_token(access_token, access_token_secret)
