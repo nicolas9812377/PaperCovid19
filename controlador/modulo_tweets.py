@@ -2,8 +2,8 @@ import tweepy
 
 def obtenerTweets(n,fechaInicio,fechaFin):
   # 4 cadenas para la autenticacion
-  consumer_key = "cgr7RCgecGri8ECGP6W1uTfdN"
-  consumer_secret = "4gvnMkiXnI0IRJPkrvIQSCTJxH1MOLAMKM3lTn1xhTVLB9K4Jy"
+  consumer_key = "QVl96YMReoRRAYwKm0WQx4c5o"
+  consumer_secret = "kjJWdZApOZvCJ1KObjDP0zXB9Zl2RaTSgCJq9YyjPCxtiZvqta"
   access_token = "632593702-px5GSEM3nsBY6BgEBYz4jNddv895HykaAE4gwaDc"
   access_token_secret = "IBmI3v4iBZ3UB33vbtFZvqi4ldOwipuj4OxtMZfE7nVQT"
   
